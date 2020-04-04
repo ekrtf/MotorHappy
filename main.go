@@ -35,16 +35,22 @@ func init() {
 }
 
 func main() {
-	r := gin.Default()
-	r.GET("/ping", func(c *gin.Context) {
+	r := SetupRouter()
+	r.Run(":8080") // TODO: env
+}
+
+// SetupRouter util
+func SetupRouter() *gin.Engine {
+	router := gin.Default()
+	router.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "pong",
 		})
 	})
 
-	r.GET("/api/v1/automobiles", getAutomobiles)
+	router.GET("/api/v1/automobiles", getAutomobiles)
 
-	r.Run(":8080")
+	return router
 }
 
 func getAutomobiles(c *gin.Context) {
