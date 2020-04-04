@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
@@ -11,25 +12,26 @@ import (
 var db *gorm.DB
 
 type make struct {
-	MakeID      uint   `json:"make_id" gorm:"primary_key"`
-	Name        string `json:"name"`
-	Nationality string `json:"nationality"`
+	MakeID      uuid.UUID `json:"make_id" gorm:"type:uuid;primary_key;default:uuid_generate_v4();"`
+	Name        string    `json:"name"`
+	Nationality string    `json:"nationality"`
 }
 
 type vehiculeType struct {
-	VehiculeTypeID uint   `json:"vehicule_type_id" gorm:"primary_key"`
-	Name           string `json:"name"`
+	VehiculeTypeID uuid.UUID `json:"vehicule_type_id" gorm:"type:uuid;primary_key;default:uuid_generate_v4();"`
+	Name           string    `json:"name"`
 }
 
 type vehicule struct {
-	VehiculeID     uint   `json:"vehicule_id" gorm:"primary_key"`
-	VehiculeTypeID uint   `json:"vehicle_type_id"` // TODO: foreign key
-	MakeID         uint   `json:"make_id"`         // TODO: foreigh key
-	ModelName      string `json:"model_name"`
+	VehiculeID     uuid.UUID    `json:"vehicule_id" gorm:"type:uuid;primary_key;default:uuid_generate_v4();"`
+	vehiculeType   vehiculeType `gorm:"foreignkey:VehiculeTypeID"`
+	VehiculeTypeID uuid.UUID    `json:"vehicle_type_id"`
+	make           uuid.UUID    `gorm:"foreignkey:MakeID"`
+	MakeID         uuid.UUID    `json:"make_id"`
+	ModelName      string       `json:"model_name"`
 }
 
 func init() {
-	//open a db connection
 	var err error
 	// TODO: use env
 	// TODO: enable ssl

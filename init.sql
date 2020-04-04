@@ -1,1 +1,2 @@
 CREATE DATABASE automobile_api;
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA public;
