@@ -10,6 +10,24 @@ import (
 
 var db *gorm.DB
 
+type make struct {
+	MakeID      uint   `json:"make_id" gorm:"primary_key"`
+	Name        string `json:"name"`
+	Nationality string `json:"nationality"`
+}
+
+type vehiculeType struct {
+	VehiculeTypeID uint   `json:"vehicule_type_id" gorm:"primary_key"`
+	Name           string `json:"name"`
+}
+
+type vehicule struct {
+	VehiculeID     uint   `json:"vehicule_id" gorm:"primary_key"`
+	VehiculeTypeID uint   `json:"vehicle_type_id"` // TODO: foreign key
+	MakeID         uint   `json:"make_id"`         // TODO: foreigh key
+	ModelName      string `json:"model_name"`
+}
+
 func init() {
 	//open a db connection
 	var err error
@@ -20,6 +38,8 @@ func init() {
 		fmt.Print(err)
 		panic("failed to connect database")
 	}
+
+	db.AutoMigrate(&make{}, &vehiculeType{}, &vehicule{})
 }
 
 func main() {
