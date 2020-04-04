@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -40,5 +41,16 @@ func main() {
 			"message": "pong",
 		})
 	})
+
+	r.GET("/api/v1/automobiles", getAutomobiles)
+
 	r.Run(":8080")
+}
+
+func getAutomobiles(c *gin.Context) {
+	var autos []automobile
+
+	db.Find(&autos)
+
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": autos})
 }
