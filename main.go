@@ -11,24 +11,13 @@ import (
 
 var db *gorm.DB
 
-type make struct {
-	MakeID      uuid.UUID `json:"make_id" gorm:"type:uuid;primary_key;default:uuid_generate_v4();"`
-	Name        string    `json:"name"`
-	Nationality string    `json:"nationality"`
-}
-
-type vehiculeType struct {
-	VehiculeTypeID uuid.UUID `json:"vehicule_type_id" gorm:"type:uuid;primary_key;default:uuid_generate_v4();"`
-	Name           string    `json:"name"`
-}
-
-type vehicule struct {
-	VehiculeID     uuid.UUID    `json:"vehicule_id" gorm:"type:uuid;primary_key;default:uuid_generate_v4();"`
-	vehiculeType   vehiculeType `gorm:"foreignkey:VehiculeTypeID"`
-	VehiculeTypeID uuid.UUID    `json:"vehicle_type_id"`
-	make           uuid.UUID    `gorm:"foreignkey:MakeID"`
-	MakeID         uuid.UUID    `json:"make_id"`
-	ModelName      string       `json:"model_name"`
+type automobile struct {
+	AutomobileID uuid.UUID `json:"automobile_id" gorm:"type:uuid;primary_key;default:uuid_generate_v4();"`
+	MakeName     string    `json:"make_name"`
+	ModelName    string    `json:"model_name"`
+	Nationality  string    `json:"nationality"`
+	Version      string    `json:"version"`
+	Horsepower   int       `json:"horsepower"`
 }
 
 func init() {
@@ -41,7 +30,7 @@ func init() {
 		panic("failed to connect database")
 	}
 
-	db.AutoMigrate(&make{}, &vehiculeType{}, &vehicule{})
+	db.AutoMigrate(&automobile{})
 }
 
 func main() {
