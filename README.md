@@ -1,5 +1,5 @@
-Automobile API
-==============
+MotoHappy
+==========
 
 Open data for automobiles.
 
